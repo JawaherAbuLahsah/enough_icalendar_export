@@ -6,7 +6,9 @@ extension AddExtension on VCalendar {
   /// Exports this calendar to the native calendar.
   ///
   /// Returns `true` when adding succeeeded.
-  Future<bool> exportToNativeCalendar() => VCalendarExporter.export(this);
+  Future<bool> exportToNativeCalendar() {
+    return VCalendarExporter.export(this);
+  }
 }
 
 /// Exports a VCalendar to the native calendar
@@ -31,16 +33,16 @@ class VCalendarExporter {
     }
     final startDate = ev.start?.toLocal() ?? DateTime.now();
     final endDate = ev.end?.toLocal() ??
-        startDate.add(ev.duration?.toDuration() ?? const Duration(hours: 1));
+        startDate.add(ev.duration?.toDuration() ?? Duration(hours: 1));
     //final iosParams =  add.IOSParams(reminder: )
 
     final attendees = <String>[];
-    for (final a in ev.attendees) {
+    ev.attendees.forEach((a) {
       final email = a.email;
       if (email != null) {
         attendees.add(email);
       }
-    }
+    });
     final add2ModelEvent = add.Event(
       title: ev.summary ?? '',
       description: _getDescription(ev),
